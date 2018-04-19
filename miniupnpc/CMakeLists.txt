@@ -96,8 +96,11 @@ if (WIN32)
 endif (WIN32)
 
 if (WIN32)
-  find_library (WINSOCK2_LIBRARY NAMES ws2_32 WS2_32 Ws2_32)
-  find_library (IPHLPAPI_LIBRARY NAMES iphlpapi)
+  # We use set instead of find_library because otherwise static compilation on Windows breaks. Don't ask me why, just roll with it.
+  # find_library (WINSOCK2_LIBRARY NAMES ws2_32 WS2_32 Ws2_32)
+  # find_library (IPHLPAPI_LIBRARY NAMES iphlpapi)
+  set (WINSOCK2_LIBRARY ws2_32)
+  set (IPHLPAPI_LIBRARY iphlpapi)
   set (LDLIBS ${WINSOCK2_LIBRARY} ${IPHLPAPI_LIBRARY} ${LDLIBS})
 #elseif (CMAKE_SYSTEM_NAME STREQUAL "Solaris")
 #  find_library (SOCKET_LIBRARY NAMES socket)
@@ -180,6 +183,7 @@ install (FILES
   DESTINATION include/miniupnpc
 )
 
-set (CONFIGURED YES CACHE INTERNAL "")
+# commented out by Ben Boeckel, who I presume knows what he's doing;)
+#set (CONFIGURED YES CACHE INTERNAL "")
 
 # vim: ts=2:sw=2
