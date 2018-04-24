@@ -98,6 +98,20 @@ set (MINIUPNPC_SOURCES
   connecthostport.c
   portlistingparse.c
   receivedata.c
+  connecthostport.h
+  igd_desc_parse.h
+  minisoap.h
+  minissdpc.h
+  miniupnpc.h
+  miniupnpctypes.h
+  miniwget.h
+  minixml.h
+  portlistingparse.h
+  receivedata.h
+  upnpcommands.h
+  upnpdev.h
+  upnperrors.h
+  upnpreplyparse.h
 )
 
 if (NOT WIN32 AND NOT CMAKE_SYSTEM_NAME STREQUAL "AmigaOS")
@@ -107,6 +121,10 @@ endif ()
 if (WIN32)
   target_compile_definitions(miniupnpc-private INTERFACE MINIUPNP_STATICLIB MINIUPNP_EXPORTS)
 endif ()
+
+if (MSVC)
+  target_compile_definitions(miniupnpc-private INTERFACE _CRT_SECURE_NO_WARNINGS)
+endif()
 
 if (WIN32)
   # We use set instead of find_library because otherwise static compilation on Windows breaks. Don't ask me why, just roll with it.
@@ -135,6 +153,16 @@ if (UPNPC_BUILD_STATIC)
   target_include_directories(libminiupnpc-static PUBLIC ../${CMAKE_CURRENT_SOURCE_DIR})
   # Suppress warnings from miniupnpc headers 
   target_include_directories(libminiupnpc-static SYSTEM PUBLIC ../${CMAKE_CURRENT_SOURCE_DIR})
+  # Suppress noise warnings 
+  if(MSVC)
+    target_compile_options(libminiupnpc-static PRIVATE -wd4244 -wd4267)
+  elseif(NOT MSVC)
+    target_compile_options(libminiupnpc-static PRIVATE  -Wno-undef -Wno-unused-result -Wno-unused-value)
+  endif()
+  # Usage requirements from msvc/upnpc-static.vcxproj and Makefile.mingw
+  if (WIN32)
+    target_compile_definitions(libminiupnpc-static PUBLIC MINIUPNP_STATICLIB)
+  endif()
   # add_executable (upnpc-static upnpc.c)
   # target_link_libraries (upnpc-static LINK_PRIVATE libminiupnpc-static)
 endif ()
