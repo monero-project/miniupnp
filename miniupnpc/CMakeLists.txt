@@ -130,6 +130,11 @@ if (UPNPC_BUILD_STATIC)
   target_link_libraries (libminiupnpc-static PRIVATE miniupnpc-private)
   set (UPNPC_INSTALL_TARGETS ${UPNPC_INSTALL_TARGETS} libminiupnpc-static)
   set (UPNPC_LIBRARY_TARGET libminiupnpc-static)
+  
+  # Allows to include like #include <miniupnpc/miniupnpc.h>
+  target_include_directories(libminiupnpc-static PUBLIC ../${CMAKE_CURRENT_SOURCE_DIR})
+  # Suppress warnings from miniupnpc headers 
+  target_include_directories(libminiupnpc-static SYSTEM PUBLIC ../${CMAKE_CURRENT_SOURCE_DIR})
   # add_executable (upnpc-static upnpc.c)
   # target_link_libraries (upnpc-static LINK_PRIVATE libminiupnpc-static)
 endif ()
