@@ -177,26 +177,6 @@ if (UPNPC_BUILD_TESTS)
 # set (UPNPC_INSTALL_TARGETS ${UPNPC_INSTALL_TARGETS} testminixml minixmlvalid testupnpreplyparse testigddescparse testminiwget)
 endif (UPNPC_BUILD_TESTS)
 
-
-install (TARGETS ${UPNPC_INSTALL_TARGETS}
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib${LIB_SUFFIX}
-  ARCHIVE DESTINATION lib${LIB_SUFFIX}
-)
-install (FILES
-	miniupnpc.h
-  miniwget.h
-  upnpcommands.h
-  igd_desc_parse.h
-  upnpreplyparse.h
-  upnperrors.h
-  upnpdev.h
-  miniupnpctypes.h
-  portlistingparse.h
-  miniupnpc_declspec.h
-  DESTINATION include/miniupnpc
-)
-
 # commented out by Ben Boeckel, who I presume knows what he's doing;)
 #set (CONFIGURED YES CACHE INTERNAL "")
 
