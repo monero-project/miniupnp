@@ -74,7 +74,7 @@ if (MSVC)
 endif()
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/miniupnpcstrings.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/miniupnpcstrings.h)
-target_include_directories(miniupnpc-private INTERFACE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(miniupnpc-private INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>")
 
 set (MINIUPNPC_SOURCES
   igd_desc_parse.c
@@ -125,7 +125,7 @@ if (UPNPC_BUILD_STATIC)
   add_library (libminiupnpc-static STATIC ${MINIUPNPC_SOURCES})
   set_target_properties (libminiupnpc-static PROPERTIES OUTPUT_NAME "miniupnpc")
   target_link_libraries (libminiupnpc-static PRIVATE miniupnpc-private)
-  target_include_directories(libminiupnpc-static INTERFACE ../${CMAKE_CURRENT_SOURCE_DIR})
+  target_include_directories(libminiupnpc-static INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
   target_compile_definitions(libminiupnpc-static PUBLIC MINIUPNP_STATICLIB)
 
   install (TARGETS libminiupnpc-static
@@ -148,7 +148,7 @@ if (UPNPC_BUILD_SHARED)
   target_link_libraries (libminiupnpc-shared PRIVATE miniupnpc-private)
   target_compile_definitions(libminiupnpc-shared PRIVATE MINIUPNP_EXPORTS)
 
-  target_include_directories(libminiupnpc-static INTERFACE ../${CMAKE_CURRENT_SOURCE_DIR})
+  target_include_directories(libminiupnpc-shared INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>")
   if (WIN32)
     target_link_libraries(libminiupnpc-shared INTERFACE ws2_32 iphlpapi)
   endif()
